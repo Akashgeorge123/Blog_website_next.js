@@ -8,9 +8,9 @@ loadEnv();
 export default {
 	out: "./drizzle/migrations",
 	schema: "./src/db/schema.ts",
-	dialect: "sqlite",
+	dialect: "postgresql",
 	dbCredentials: {
-		url: "blog_website.db",
+		url: process.env.DATABASE_URL!,
 	},
 } satisfies Config;
 

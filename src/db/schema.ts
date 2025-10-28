@@ -1,16 +1,16 @@
-import { sqliteTable, integer, text, uniqueIndex } from "drizzle-orm/sqlite-core";
+import { pgTable, serial, text, timestamp, boolean, uniqueIndex, integer } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 // Categories table
-export const categories = sqliteTable(
+export const categories = pgTable(
 	"categories",
 	{
-		id: integer("id").primaryKey({ autoIncrement: true }),
+		id: serial("id").primaryKey(),
 		name: text("name").notNull(),
 		description: text("description"),
 		slug: text("slug").notNull(),
-		createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
-		updatedAt: integer("updated_at", { mode: "timestamp" }).notNull(),
+		createdAt: timestamp("created_at").notNull().defaultNow(),
+		updatedAt: timestamp("updated_at").notNull().defaultNow(),
 	},
 	(table) => ({
 		slugIdx: uniqueIndex("category_slug_idx").on(table.slug),
@@ -18,18 +18,18 @@ export const categories = sqliteTable(
 );
 
 // Posts table
-export const posts = sqliteTable(
+export const posts = pgTable(
 	"posts",
 	{
-		id: integer("id").primaryKey({ autoIncrement: true }),
+		id: serial("id").primaryKey(),
 		title: text("title").notNull(),
 		content: text("content").notNull(),
 		slug: text("slug").notNull(),
 		author: text("author").notNull(),
 		status: text("status").default("draft").notNull(),
-		published: integer("published", { mode: "boolean" }).default(false).notNull(),
-		createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
-		updatedAt: integer("updated_at", { mode: "timestamp" }).notNull(),
+		published: boolean("published").default(false).notNull(),
+		createdAt: timestamp("created_at").notNull().defaultNow(),
+		updatedAt: timestamp("updated_at").notNull().defaultNow(),
 	},
 	(table) => ({
 		slugIdx: uniqueIndex("post_slug_idx").on(table.slug),
@@ -37,7 +37,7 @@ export const posts = sqliteTable(
 );
 
 // Join table for many-to-many between posts and categories
-export const postCategories = sqliteTable(
+export const postCategories = pgTable(
 	"post_categories",
 	{
 		postId: integer("post_id").notNull(),

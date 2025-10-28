@@ -9,6 +9,8 @@ type PostData = {
 	author: string;
 	status: "draft" | "published";
 	published: boolean;
+	createdAt: Date;
+	updatedAt: Date;
 };
 
 async function main() {
@@ -40,6 +42,8 @@ async function main() {
 			author: authors[0],
 			status: "published",
 			published: true,
+			createdAt: new Date(),
+			updatedAt: new Date(),
 		},
 		{
 			title: "Mastering React Server Components",
@@ -48,6 +52,8 @@ async function main() {
 			author: authors[1],
 			status: "published",
 			published: true,
+			createdAt: new Date(),
+			updatedAt: new Date(),
 		},
 		{
 			title: "Building Scalable APIs with GraphQL",
@@ -56,6 +62,8 @@ async function main() {
 			author: authors[2],
 			status: "published",
 			published: true,
+			createdAt: new Date(),
+			updatedAt: new Date(),
 		},
 		{
 			title: "The Rise of Edge Computing",
@@ -64,6 +72,8 @@ async function main() {
 			author: authors[3],
 			status: "published",
 			published: true,
+			createdAt: new Date(),
+			updatedAt: new Date(),
 		},
 		{
 			title: "CSS Grid vs Flexbox: When to Use What",
@@ -72,6 +82,8 @@ async function main() {
 			author: authors[4],
 			status: "published",
 			published: true,
+			createdAt: new Date(),
+			updatedAt: new Date(),
 		},
 		{
 			title: "Securing Your Web Applications",
@@ -80,6 +92,8 @@ async function main() {
 			author: authors[0],
 			status: "published",
 			published: true,
+			createdAt: new Date(),
+			updatedAt: new Date(),
 		},
 		{
 			title: "The Evolution of JavaScript Frameworks",
@@ -88,6 +102,8 @@ async function main() {
 			author: authors[1],
 			status: "published",
 			published: true,
+			createdAt: new Date(),
+			updatedAt: new Date(),
 		},
 		{
 			title: "Optimizing Web Performance",
@@ -96,18 +112,15 @@ async function main() {
 			author: authors[2],
 			status: "published",
 			published: true,
+			createdAt: new Date(),
+			updatedAt: new Date(),
 		},
 	];
 
 	for (const p of postData) {
-		const postWithTimestamps = {
-			...p,
-			createdAt: new Date(),
-			updatedAt: new Date(),
-		};
 		const [inserted] = await db
 			.insert(posts)
-			.values(postWithTimestamps)
+			.values(p)
 			.onConflictDoNothing()
 			.returning();
 		if (inserted) {
